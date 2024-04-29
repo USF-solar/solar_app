@@ -1,5 +1,3 @@
-import logo from './logo.png';
-import footer from './footer.png'
 import './App.css';
 import Home from './components/Home';
 

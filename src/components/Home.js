@@ -1,8 +1,7 @@
 import Search from './Search';
-import ItemList from './List'
+import List from './List'
 import React from "react";
-import logo from '../logo.png';
-import background from '../background_sample.png';
+import eclipse from '../eclipse.jpeg';
 import beta_model from '../beta_model.png';
 import '../App.css';
 import { CSVLink, CSVDownload } from "react-csv";
@@ -10,7 +9,7 @@ import { CSVLink, CSVDownload } from "react-csv";
 class Home extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {page: 'search', img: background, search: ''}
+        this.state = {page: 'search', img: eclipse, search: ''}
         this.handleClick = this.handleClick.bind(this)
         this.handleReturn = this.handleReturn.bind(this)
         this.results = this.results.bind(this)
@@ -20,11 +19,7 @@ class Home extends React.Component {
         console.log("click")
         const term = document.getElementById('search-input').value
         this.setState({page: 'results', search: term})
-        if (term.includes("376 Utica Ln")) {
-            this.setState({img: beta_model})
-        } else {
-            this.setState({img: background})
-        }
+        this.setState({img: eclipse})
     }
 
     handleReturn() {
@@ -32,12 +27,12 @@ class Home extends React.Component {
     }
 
     results() {
-        if (this.state.search.includes("376 Utica Ln")) {
+        if (this.state.search.includes("95123")) {
             return (
                 <div class="results">
                     <h1>Search Results for {this.state.search}</h1>
                     {/* <CSVLink data={this.state.items} filename={"solar_scan_results.csv"}>Download Results</CSVLink> */}
-                    <ItemList term={this.state.search} />
+                    <List term={this.state.search} updateImg={this.updateImg}/>
                 </div>
             )
         } else {
@@ -48,51 +43,25 @@ class Home extends React.Component {
             )
         }
     }
-
+    
     render() {
-        // const items = [
-        //     {
-        //       address: "123 Main St",
-        //       area: 1000,
-        //       panels: 20,
-        //       co2: 10.5
-        //     },
-        //     {
-        //       address: "456 Elm St",
-        //       area: 800,
-        //       panels: 15,
-        //       co2: 8.2
-        //     },
-        //     {
-        //       address: "789 Oak St",
-        //       area: 1200,
-        //       panels: 25,
-        //       co2: 12.8
-        //     },
-        //     {
-        //       address: "101 Pine St",
-        //       area: 900,
-        //       panels: 18,
-        //       co2: 9.3
-        //     },
-        //     {
-        //       address: "111 Maple St",
-        //       area: 1100,
-        //       panels: 22,
-        //       co2: 11.1
-        //     }
-        //   ];
-        // this.updateResults()
 
         if (this.state.page === 'search') {
             return (
-                <div class="search-container">
-                    <Search handle={this.handleClick}/>
+                <div>
+                    <div class="search-container">
+                        <Search handle={this.handleClick}/>
+                    </div>
+                    <div>
+                        <h3>Solar Scan is an app for finding promising leads in zipcodes of interest.</h3>
+                        <h3>Enter a zipcode above to get started.</h3>
+                    </div>
                 </div>
             );
         }
+
         return (
-            <div style={{ display: 'flex', alignItems: 'center'}} >
+            <div style={{ alignItems: 'center'}} >
                 <div id="results-bar">
                     <div>
                         <button onClick={this.handleReturn} type="submit" class="submit-btn">Back</button>
@@ -100,11 +69,29 @@ class Home extends React.Component {
                     <Search handle={this.handleClick}/>
                     {this.results()}
                 </div>
-                <div style={{ width: '70%' }}>
-                    <img src={this.state.img} alt="house" style={{ maxWidth: '100%', height: 'auto' }} />
-                </div>
+                <ImageGrid res={this.state.search}/>
             </div>
         );
+    }
+}
+
+function ImageGrid(props) {
+    const images = require.context('../images', true);
+    const imageList = images.keys().map(image => images(image));
+    const names = images.keys().map(image => image.split('.png')[0].split('/')[1])
+    if (props.res === "95123") {
+        return (
+            <div class="image-grid">
+                {imageList.map((item, index) => (
+                <div>
+                    <img id="img-item" src={item} alt={index}/>
+                    <figcaption>{names[index]}</figcaption>
+                </div>
+                ))}
+            </div>
+        )
+    } else {
+        return
     }
 }
 
