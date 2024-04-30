@@ -3,39 +3,40 @@ import axios from 'axios'
 import beta_model from '../beta_model.png';
 
 function List({ term, updateImg }) {
-  const addresses = ["373 Alric Dr", "368 Utica Ln", "376 Utica Ln", "385 Utica Ln"]
+  const addresses = ["373 Alric Dr, San Jose, CA", "368 Utica Ln, San Jose, CA", "376 Utica Ln, San Jose, CA", "385 Utica Ln, San Jose, CA"]
+  const feat = [{pool: "Pool", solar: "No Solar"}, {pool: "Pool", solar: "Solar"}, {pool: "Pool", solar: "No Solar"}, {pool: "No Pool", solar: "No Solar"}]
   return (
     <div>
       <ul style={{ listStyleType: 'none', padding: 0 }}>
         {addresses.map((item, index) => (
-          <ItemList term={item}/>
+          <ItemList term={item} features={feat[index]}/>
         ))}
       </ul>
     </div>
   )
 }
 
-function ItemList({ term }) {
+function ItemList({ term, features }) {
   // console.log(term)
-  // const [isLoading, setLoading] = useState(true);
-  // const [items, setItems] = useState();
-  // const apiUrl = 'http://52.91.96.194:8080/getSolarData?address='.concat(term);
-  // useEffect(() => {
-  //   axios.get(apiUrl).then(response => {
-  //     setItems(response.data);
-  //     setLoading(false);
-  //   });
-  // }, []);
+  const [isLoading, setLoading] = useState(true);
+  const [items, setItems] = useState();
+  const apiUrl = 'http://54.160.173.202:8080/getSolarData?address='.concat(term);
+  useEffect(() => {
+    axios.get(apiUrl).then(response => {
+      setItems(response.data);
+      setLoading(false);
+    });
+  }, []);
 
-  // if (isLoading) {
-  //     return <div className="App">Loading...</div>;
-  // }
+  if (isLoading) {
+      return <div className="App">Loading...</div>;
+  }
 
-  const items = {
-    'Carbon Offset Factor (kg/MWh)': 100,
-    'Max Area (m²)': 500,
-    'Max Sunshine Hours per Year': 2000
-  };
+  // const items = {
+  //   'Carbon Offset Factor (kg/MWh)': 100,
+  //   'Max Area (m²)': 500,
+  //   'Max Sunshine Hours per Year': 2000
+  // };
 
   console.log(items)
   return (
@@ -46,12 +47,12 @@ function ItemList({ term }) {
             <div class="row">
               Roof Area: {items['Carbon Offset Factor (kg/MWh)']} ft2
               <span style={{float:'right'}}>
-                  No Pool
+                  {features.pool}
               </span>
             </div>
             <div class="row">Max Panel Count: {items['Max Area (m²)']} panels
               <span style={{float:'right'}}>
-                  No Solar
+                {features.solar}
               </span>
             </div>
             <div class="row">CO2 Savings: {items['Max Sunshine Hours per Year']} kg/MWh</div>
