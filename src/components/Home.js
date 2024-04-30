@@ -54,7 +54,7 @@ class Home extends React.Component {
                     </div>
                     <div>
                         <h3>Solar Scan is an app for finding promising leads in zipcodes of interest.</h3>
-                        <h3>Enter a zipcode above to get started.</h3>
+                        <h3>Enter a zipcode above to see our tech in action, or click "Learn More" to explore how we can help you.</h3>
                     </div>
                 </div>
             );

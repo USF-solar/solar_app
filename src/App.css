@@ -15,6 +15,7 @@
 
 html {
   background-color: rgb(106, 212, 195);
+  height: 95vh;
 }
 
 .App-header {
@@ -35,6 +36,11 @@ html {
 .search-input {
   background-color: black;
   align-items: left;
+}
+
+#signup {
+  float: right;
+  margin: 10px;
 }
 
 input[type="text"],
