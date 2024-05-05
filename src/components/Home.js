@@ -4,7 +4,7 @@ import React from "react";
 import eclipse from '../eclipse.jpeg';
 import beta_model from '../beta_model.png';
 import '../App.css';
-import { CSVLink, CSVDownload } from "react-csv";
+import logo from '../logo.svg'
 
 class Home extends React.Component {
     constructor(props) {
@@ -31,7 +31,6 @@ class Home extends React.Component {
             return (
                 <div class="results">
                     <h1>Search Results for {this.state.search}</h1>
-                    {/* <CSVLink data={this.state.items} filename={"solar_scan_results.csv"}>Download Results</CSVLink> */}
                     <List term={this.state.search} updateImg={this.updateImg}/>
                 </div>
             )
@@ -49,6 +48,7 @@ class Home extends React.Component {
         if (this.state.page === 'search') {
             return (
                 <div>
+                    <img src={logo} style={{ width: '45%', height: 'auto' }}/>
                     <div class="search-container">
                         <Search handle={this.handleClick}/>
                     </div>
@@ -61,37 +61,14 @@ class Home extends React.Component {
         }
 
         return (
-            <div style={{ alignItems: 'center'}} >
-                <div id="results-bar">
-                    <div>
-                        <button onClick={this.handleReturn} type="submit" class="submit-btn">Back</button>
-                    </div>
-                    <Search handle={this.handleClick}/>
-                    {this.results()}
+            <div class="container">
+                <div>
+                    <img src={logo} style={{ width: '15%', height: 'auto'}}/>
                 </div>
-                <ImageGrid res={this.state.search}/>
+                <Search handle={this.handleClick}/>
+                {this.results()}
             </div>
         );
-    }
-}
-
-function ImageGrid(props) {
-    const images = require.context('../images', true);
-    const imageList = images.keys().map(image => images(image));
-    const names = images.keys().map(image => image.split('.png')[0].split('/')[1])
-    if (props.res === "95123") {
-        return (
-            <div class="image-grid">
-                {imageList.map((item, index) => (
-                <div>
-                    <img id="img-item" src={item} alt={index}/>
-                    <figcaption>{names[index]}</figcaption>
-                </div>
-                ))}
-            </div>
-        )
-    } else {
-        return
     }
 }
 
